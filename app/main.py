@@ -36,3 +36,16 @@ def get_assets():
 @app.get("/nominees")
 def get_nominees():
     return fetch_collection("Nominees")
+
+@app.get("/debug-all")
+def debug_all():
+
+    collections = ["Users", "Assets", "Nominees"]
+
+    output = {}
+
+    for col in collections:
+        docs = db.collection(col).stream()
+        output[col] = [d.to_dict() for d in docs]
+
+    return output
